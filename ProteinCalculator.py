@@ -15,6 +15,7 @@ root.config(bg="floralwhite")
 # RMR Calculation
 def rmr_calculator():
     try:
+        Name = str(n.get())
         Height = float(h.get())
         Weight = float(w.get())
         Age = int(a.get())
@@ -30,7 +31,7 @@ def rmr_calculator():
         protein_intake = 1.6 * Weight
 
         with open("rmr_data.txt", "a") as file:
-            file.write(f"{Height},{Weight},{Age},{Gender},{rmr_value:.2f}\n")
+            file.write(f"Name:{Name}, Height:{Height}, Weight:{Weight}, Age:{Age}, Gender:{Gender}, RMR:{rmr_value:.2f}, Protein Intake Recommendation: {protein_intake} \n")
 
         result.set(f"RMR: {rmr_value:.2f} kcal/day\nRecommended Protein Intake: {protein_intake:.2f} grams/day")
     except ValueError:
@@ -41,33 +42,40 @@ top = tkinter.Label(root, text="PROTEIN CALCULATOR", font=("calibri", 25, "bold"
 top.place(x=0, y=0)
 
 # Entry widgets
+namelabel = tkinter.Label(root, text="Name:", fg="lightsalmon4", bg="floralwhite", font=("calibri", 12, "bold"))
+namelabel.place(x=50, y=70)
+n = tkinter.Entry(root, width=10, font=("calibri", 12))
+n.place(x=200, y=70)
+
 heightlabel = tkinter.Label(root, text="Height (cm):", fg="lightsalmon4", bg="floralwhite", font=("calibri", 12, "bold"))
-heightlabel.place(x=50, y=70)
+heightlabel.place(x=50, y=120)
 h = tkinter.Entry(root, width=10, font=("calibri", 12))
-h.place(x=200, y=70)
+h.place(x=200, y=120)
 
 weightlabel = tkinter.Label(root, text="Weight (kg):", fg="lightsalmon4", bg="floralwhite", font=("calibri", 12, "bold"))
-weightlabel.place(x=50, y=120)
+weightlabel.place(x=50, y=170)
 w = tkinter.Entry(root, width=10, font=("calibri", 12))
-w.place(x=200, y=120)
+w.place(x=200, y=170)
 
 agelabel = tkinter.Label(root, text="Age:", fg="lightsalmon4", bg="floralwhite", font=("calibri", 12, "bold"))
-agelabel.place(x=50, y=170)
+agelabel.place(x=50, y=220)
 a = tkinter.Spinbox(root, from_=15, to=80)
-a.place(x=200, y=170)
+a.place(x=200, y=220)
 
 genderlabel = tkinter.Label(root, text="Gender:", fg="lightsalmon4", bg="floralwhite", font=("calibri", 12, "bold"))
-genderlabel.place(x=50, y=220)
+genderlabel.place(x=50, y=270)
 g = ttk.Combobox(root, values=['male', 'female'])
-g.place(x=200, y=220)
+g.place(x=200, y=270)
 
 # Calculate button
 calculatebtn = tkinter.Button(root, text="Calculate", fg="orange4", bg="moccasin", font=("calibri", 12, "bold"), command=rmr_calculator)
-calculatebtn.place(x=350, y=270)
+calculatebtn.place(x=350, y=320)
 
 # Result label
 result = tkinter.StringVar()
 resultlabel = tkinter.Label(root, textvariable=result, bg="floralwhite", font=("calibri", 12))
-resultlabel.place(x=50, y=320)
+resultlabel.place(x=50, y=370)
 
 root.mainloop()
+
+
