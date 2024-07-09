@@ -49,8 +49,24 @@ def calculate_protein_intake():
         # Prompt user to log protein intake
         log_protein_prompt()
 
+        # Save data to file
+        save_data_to_file(name_entry.get(), weight, height, age, gender, bmr, recommended_protein_intake)
+
     except ValueError:
         messagebox.showerror("Invalid Input", "Please enter valid numbers for weight, height, and age.")
+
+def save_data_to_file(user_name, weight, height, age, gender, bmr, recommended_protein_intake):
+    today = datetime.date.today().isoformat()
+
+    with open("bmr_data.txt", "a") as file:
+        file.write(f"Date: {today}\n")
+        file.write(f"User: {user_name}\n")
+        file.write(f"Weight: {weight} kg\n")
+        file.write(f"Height: {height} cm\n")
+        file.write(f"Age: {age}\n")
+        file.write(f"Gender: {gender}\n")
+        file.write(f"BMR: {bmr:.2f} kcal/day\n")
+        file.write(f"Recommended Protein Intake: {recommended_protein_intake:.2f} grams/day\n\n")
 
 # Function to prompt user to log daily protein intake
 def log_protein_prompt():
