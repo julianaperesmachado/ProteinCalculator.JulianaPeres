@@ -61,9 +61,6 @@ def log_protein_prompt():
 def open_log_intake_window():
     user_name = name_entry.get()
 
-    # Clear previous history for new user
-    clear_history_if_new_user(user_name)
-
     # Create a new window for logging protein intake
     log_window = tk.Toplevel(root)
     log_window.title("Protein Intake Calculator")
@@ -80,11 +77,6 @@ def open_log_intake_window():
     # Create a HistoryWindow instance within the new window
     history_frame = HistoryWindow(log_window, user_name)
     history_frame.pack(padx=20, pady=20)
-
-# Clear history if a new user logs in
-def clear_history_if_new_user(user_name):
-    global protein_intake_history
-    protein_intake_history = {user_name: {}}
 
 # History Display Window
 class HistoryWindow(tk.Frame):
@@ -145,30 +137,18 @@ class HistoryWindow(tk.Frame):
         self.history_text.delete('1.0', tk.END)
 
         total_protein = 0
-        today = datetime.date.today().isoformat()
 
         if self.user_name in protein_intake_history:
-            if today in protein_intake_history[self.user_name]:
-                intake_entries = protein_intake_history[self.user_name][today]
-            else:
-                intake_entries = []
-        else:
-            intake_entries = []
+            for date, entries in protein_intake_history[self.user_name].items():
+                self.history_text.insert(tk.END, f"Date: {date}\n")
+                self.history_text.insert(tk.END, f"Recommended Protein Intake Goal: {self.recommended_goal:.2f} grams/day\n\n")
 
-        remaining_goal = max(0, self.recommended_goal - self.total_protein_intake)
+                for i, intake in enumerate(entries, start=1):
+                    self.history_text.insert(tk.END, f"Entry {i}: {intake:.2f} grams\n")
 
-        # Display today's intake and remaining goal
-        self.history_text.insert(tk.END, f"Date: {today}\n")
-        self.history_text.insert(tk.END, f"Recommended Protein Intake Goal: {self.recommended_goal:.2f} grams/day\n\n")
+                self.history_text.insert(tk.END, f"Cumulative Protein Intake: {sum(entries):.2f} grams\n")
+                self.history_text.insert(tk.END, f"Remaining Protein Intake Goal: {max(0, self.recommended_goal - sum(entries)):.2f} grams\n\n")
 
-        for i, intake in enumerate(intake_entries, start=1):
-            self.history_text.insert(tk.END, f"Entry {i}: {intake:.2f} grams\n")
-
-        if intake_entries:
-            self.history_text.insert(tk.END, "\n")
-
-        self.history_text.insert(tk.END, f"Cumulative Protein Intake: {self.total_protein_intake:.2f} grams\n")
-        self.history_text.insert(tk.END, f"Remaining Protein Intake Goal: {remaining_goal:.2f} grams\n")
         self.history_text.config(state=tk.DISABLED)
 
 # Title for the main window
