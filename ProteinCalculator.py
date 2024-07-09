@@ -11,7 +11,6 @@ root.configure(bg="floralwhite")
 
 # Initialize protein intake history dictionary globally
 protein_intake_history = {}
-recommended_protein_goal = 140  # Default recommended goal
 
 # Load the images using Pillow (after tkinter has been initialized)
 main_image = Image.open("C:\\Users\\gomes\\Desktop\\JULIANA\\C-Women\\Python - Rawan\\protein1.jpg")
@@ -62,6 +61,9 @@ def log_protein_prompt():
 def open_log_intake_window():
     user_name = name_entry.get()
 
+    # Clear previous history for new user
+    clear_history_if_new_user(user_name)
+
     # Create a new window for logging protein intake
     log_window = tk.Toplevel(root)
     log_window.title("Protein Intake Calculator")
@@ -76,14 +78,20 @@ def open_log_intake_window():
     user_name_label.pack(pady=10)
 
     # Create a HistoryWindow instance within the new window
-    history_frame = HistoryWindow(log_window)
+    history_frame = HistoryWindow(log_window, user_name)
     history_frame.pack(padx=20, pady=20)
+
+# Clear history if a new user logs in
+def clear_history_if_new_user(user_name):
+    global protein_intake_history
+    protein_intake_history = {user_name: {}}
 
 # History Display Window
 class HistoryWindow(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, user_name):
         super().__init__(parent, bg="floralwhite")
 
+        self.user_name = user_name
         self.total_protein_intake = 0  # Initialize cumulative total
         self.recommended_goal = recommended_protein_goal
 
@@ -114,10 +122,13 @@ class HistoryWindow(tk.Frame):
             protein_intake = float(self.protein_entry.get())
             today = datetime.date.today().isoformat()
 
-            if today in protein_intake_history:
-                protein_intake_history[today].append(protein_intake)
+            if self.user_name in protein_intake_history:
+                if today in protein_intake_history[self.user_name]:
+                    protein_intake_history[self.user_name][today].append(protein_intake)
+                else:
+                    protein_intake_history[self.user_name][today] = [protein_intake]
             else:
-                protein_intake_history[today] = [protein_intake]
+                protein_intake_history[self.user_name] = {today: [protein_intake]}
 
             self.total_protein_intake += protein_intake  # Update cumulative total
 
@@ -135,8 +146,12 @@ class HistoryWindow(tk.Frame):
 
         total_protein = 0
         today = datetime.date.today().isoformat()
-        if today in protein_intake_history:
-            intake_entries = protein_intake_history[today]
+
+        if self.user_name in protein_intake_history:
+            if today in protein_intake_history[self.user_name]:
+                intake_entries = protein_intake_history[self.user_name][today]
+            else:
+                intake_entries = []
         else:
             intake_entries = []
 
@@ -200,4 +215,3 @@ recommended_protein_label.grid(row=1, column=0, padx=20, pady=10)
 
 # Main loop
 root.mainloop()
-
