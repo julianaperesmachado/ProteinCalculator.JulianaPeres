@@ -13,10 +13,6 @@ root.configure(bg="floralwhite")
 protein_intake_history = {}
 
 # Load the images using Pillow (after tkinter has been initialized)
-main_image = Image.open("C:\\Users\\gomes\\Desktop\\JULIANA\\C-Women\\Python - Rawan\\protein1.jpg")
-main_image = main_image.resize((300, 250), Image.LANCZOS)  # Resize main image
-tk_main_image = ImageTk.PhotoImage(main_image)
-
 log_image = Image.open("C:\\Users\\gomes\\Desktop\\JULIANA\\C-Women\\Python - Rawan\\protein1.jpg")
 log_image = log_image.resize((500, 400), Image.LANCZOS)  # Resize log image
 tk_log_image = ImageTk.PhotoImage(log_image)
