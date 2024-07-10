@@ -141,6 +141,10 @@ class HistoryWindow(tk.Frame):
             # Clear protein entry field after logging
             self.protein_entry.delete(0, tk.END)
 
+            # Check if recommended goal is achieved
+            if self.total_protein_intake >= self.recommended_goal:
+                messagebox.showinfo("Goal Achieved", "Well done!!! You have achieved your protein intake goal for today.")
+
         except ValueError:
             messagebox.showerror("Invalid Input", "Please enter a valid number for protein intake.")
 
@@ -149,6 +153,7 @@ class HistoryWindow(tk.Frame):
         self.history_text.delete('1.0', tk.END)
 
         total_protein = 0
+        goal_achieved = False
 
         if self.user_name in protein_intake_history:
             for date, entries in protein_intake_history[self.user_name].items():
@@ -158,10 +163,17 @@ class HistoryWindow(tk.Frame):
                 for i, intake in enumerate(entries, start=1):
                     self.history_text.insert(tk.END, f"Entry {i}: {intake:.2f} grams\n")
 
-                self.history_text.insert(tk.END, f"Cumulative Protein Intake: {sum(entries):.2f} grams\n")
-                self.history_text.insert(tk.END, f"Remaining Protein Intake Goal: {max(0, self.recommended_goal - sum(entries)):.2f} grams\n\n")
+                cumulative_intake = sum(entries)
+                self.history_text.insert(tk.END, f"Cumulative Protein Intake: {cumulative_intake:.2f} grams\n")
+                self.history_text.insert(tk.END, f"Remaining Protein Intake Goal: {max(0, self.recommended_goal - cumulative_intake):.2f} grams\n\n")
+
+                if cumulative_intake >= self.recommended_goal:
+                    goal_achieved = True
 
         self.history_text.config(state=tk.DISABLED)
+
+        if goal_achieved:
+            messagebox.showinfo("Goal Achieved", "Well done!!! You have achieved your protein intake goal for today.")
 
 # Title for the main window
 main_window_title = tk.Label(root, text="BMR AND PROTEIN INTAKE RECOMMENDATION", font=("calibri", 20, "bold"), fg="tomato4", bg="peachpuff3")
@@ -198,11 +210,11 @@ calculate_button = tk.Button(root, text="Calculate", font=("calibri", 12), bg="m
 calculate_button.place(x=50, y=330)
 
 # Result frame
-result_frame = tk.Frame(root, bg="floralwhite")
-result_label = tk.Label(result_frame, text="", font=("calibri", 14, "bold"), bg="floralwhite")
+result_frame = tk.Frame(root, bg="moccasin")
+result_label = tk.Label(result_frame, text="", font=("calibri", 14, "bold"), bg="moccasin")
 result_label.grid(row=0, column=0, padx=20, pady=10)
 
-recommended_protein_label = tk.Label(result_frame, text="", font=("calibri", 14, "bold"), bg="floralwhite")
+recommended_protein_label = tk.Label(result_frame, text="", font=("calibri", 14, "bold"), bg="moccasin")
 recommended_protein_label.grid(row=1, column=0, padx=20, pady=10)
 
 # Main loop
