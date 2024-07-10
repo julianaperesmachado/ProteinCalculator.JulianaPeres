@@ -12,10 +12,10 @@ root.configure(bg="floralwhite")
 # Initialize protein intake history dictionary globally
 protein_intake_history = {}
 
-# Load the images using Pillow (after tkinter has been initialized)
-log_image = Image.open("C:\\Users\\gomes\\Desktop\\JULIANA\\C-Women\\Python - Rawan\\protein1.jpg")
-log_image = log_image.resize((500, 400), Image.LANCZOS)  # Resize log image
-tk_log_image = ImageTk.PhotoImage(log_image)
+# Load the image using Pillow (after tkinter has been initialized)
+main_image = Image.open("C:\\Users\\gomes\\Desktop\\JULIANA\\C-Women\\Python - Rawan\\protein1.jpg")
+main_image = main_image.resize((500, 400), Image.LANCZOS)  # Resize log image
+tk_main_image = ImageTk.PhotoImage(main_image)
 
 # Function to calculate recommended protein intake based on BMR
 def calculate_protein_intake():
@@ -100,7 +100,7 @@ class HistoryWindow(tk.Frame):
         self.recommended_goal = recommended_protein_goal
 
         # Display the log image
-        self.image_label = tk.Label(self, image=tk_log_image)
+        self.image_label = tk.Label(self, image=tk_main_image)
         self.image_label.grid(row=0, column=0, columnspan=3, pady=20)
 
         self.protein_label = tk.Label(self, text="Log Protein Intake (grams):", font=("calibri", 12, "bold"), bg="floralwhite")
