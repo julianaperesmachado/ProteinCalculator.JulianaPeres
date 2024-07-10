@@ -173,7 +173,7 @@ class HistoryWindow(tk.Frame):
         self.history_text.config(state=tk.DISABLED)
 
         if goal_achieved:
-            messagebox.showinfo("Goal Achieved", "Well done!!! You have achieved your protein intake goal for today.")
+            messagebox.showinfo("Goal Achieved", "Well done!!!👏👏👏\n You have achieved your protein intake goal for today.")
 
 # Title for the main window
 main_window_title = tk.Label(root, text="BMR AND PROTEIN INTAKE RECOMMENDATION", font=("calibri", 20, "bold"), fg="tomato4", bg="peachpuff3")
